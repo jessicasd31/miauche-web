@@ -1,3 +1,5 @@
+import { Reducer } from 'redux'
+import { Positions } from './types'
 
 const INITIAL_STATE = {
   currentPosition: null,
@@ -5,7 +7,7 @@ const INITIAL_STATE = {
   knownPosition: 0
 }
 
-export default function positionsReducer(state = INITIAL_STATE, action: any) {
+export default function positionsReducer<Positions>(state = INITIAL_STATE, action: any) {
   switch (action.type) {
     case 'TOGGLE_CURRENT_POSITION':
       return {...state, 

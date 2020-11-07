@@ -9,7 +9,8 @@ import mapMarkerImg from '../../assets/local.svg'
 import mapIcon from '../../assets/mapIcon';
 import {Page, Aside, AddButton, Select} from './styles'
 import SelectCity from '../../components/SelectCity'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { ApplicationState } from '../../store'
 // import api from '../services/api'
   
 const sheltersSample = [
@@ -21,8 +22,8 @@ const sheltersSample = [
   }
 ]  
 
-const SheltersMap = ({ positionsInfo }:any) => {
-  const { positionMap } = positionsInfo.positions;
+const SheltersMap = () => {
+  const positionMap = useSelector((state: ApplicationState) => state.positions.positionMap)
   const [shelters, setShelters] = useState(sheltersSample)
 
   // useEffect(() => {
@@ -91,4 +92,4 @@ const SheltersMap = ({ positionsInfo }:any) => {
   )
 }
 
-export default connect(state => ({positionsInfo: state}))(SheltersMap);
+export default SheltersMap;

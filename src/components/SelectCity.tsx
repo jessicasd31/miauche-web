@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
-import { connect } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as PositionActions from '../store/actions/positions'
+import { toggleCurrentPosition, togglePositionMap } from '../store/ducks/positions/actions'
+import { ApplicationState } from '../store'
 
 const Select = styled.select `
   background-color: transparent;
@@ -21,14 +22,6 @@ const Select = styled.select `
     font-size: 20px;
   }
 `
-interface Loc {
-  id?: number,
-  city: string,
-  uf: string,
-  latitude: number,
-  longitude: number,
-  zoom: number
-}
 
 const locations = [
     {  
@@ -97,9 +90,10 @@ const locations = [
     },
   ]
 
-const SelectCity = ({ positionsInfo, toggleCurrentPosition, togglePositionMap }: any) => {
-  const { positions } = positionsInfo;
-  
+const SelectCity = () => {
+  const positions = useSelector((state: ApplicationState) => state.positions)
+  const dispatch = useDispatch();
+
   useEffect(()=> {
     if(positions.currentPosition === null){
       getLocation();
@@ -130,7 +124,7 @@ const SelectCity = ({ positionsInfo, toggleCurrentPosition, togglePositionMap }:
         const data = response.data;
         if (!data.features[0]) {
           console.log("Localidade não encontrada");
-          togglePositionMap(locations[0])
+          dispatch(togglePositionMap(locations[0]))
           return false;
         }
         
@@ -147,11 +141,11 @@ const SelectCity = ({ positionsInfo, toggleCurrentPosition, togglePositionMap }:
         const checkLocation = locations.find(i => i.city === currentPosition?.city && i.uf === currentPosition?.uf);
 
         if (checkLocation) {
-          toggleCurrentPosition(checkLocation, checkLocation.id)
-          togglePositionMap(checkLocation)
+          dispatch(toggleCurrentPosition(checkLocation, checkLocation.id))
+          dispatch(togglePositionMap(checkLocation))
         } else {
-          toggleCurrentPosition(currentPosition, 0)
-          togglePositionMap(currentPosition)
+          dispatch(toggleCurrentPosition(currentPosition, 0))
+          dispatch(togglePositionMap(currentPosition))
         }
         
       })
@@ -161,11 +155,11 @@ const SelectCity = ({ positionsInfo, toggleCurrentPosition, togglePositionMap }:
   function handleLocation(e: React.ChangeEvent<HTMLSelectElement>) {
     // console.log({index: e.target.selectedIndex, value: e.target.value});
     if (positions.knownPosition === 0 && e.target.value == positions.currentPosition.city){
-      togglePositionMap(positions.currentPosition);
+      dispatch(togglePositionMap(positions.currentPosition));
       return;
     }
 
-    togglePositionMap(locations[locations.map(i => i.city).indexOf(e.target.value)])
+    dispatch(togglePositionMap(locations[locations.map(i => i.city).indexOf(e.target.value)]))
   }
 
   return (
@@ -187,10 +181,4 @@ const SelectCity = ({ positionsInfo, toggleCurrentPosition, togglePositionMap }:
   )
 }
 
-const mapStateToProps = ( state: any ) => ({
-  positionsInfo: state
-})
-
-const mapDispatchToProps = ( dispatch:any ) => bindActionCreators(PositionActions, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(SelectCity);
+export default SelectCity;

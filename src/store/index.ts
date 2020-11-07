@@ -1,7 +1,13 @@
-import { createStore } from 'redux'
+import { createStore, Store } from 'redux'
+import { Positions } from './ducks/positions/types'
 
-import rootReducer from './reducers'
+import rootReducer from './ducks/rootReducer'
 
-const store = createStore(rootReducer)
+export interface ApplicationState {
+  positions: Positions
+}
+
+const store: Store<ApplicationState> = createStore(rootReducer)
+
 
 export default store;
