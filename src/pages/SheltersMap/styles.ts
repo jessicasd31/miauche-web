@@ -78,19 +78,6 @@ export const Aside = styled.aside`
   }
 `
 
-export const Select = styled.select `
-  background-color: transparent;
-  border: none;
-  color: #FFF;
-  font-size: 18px;
-  font-weight: 600;
-
-  option {
-    background-color: var(--gray);
-    color: var(--darkGray);
-  }
-`
-
 export const AddButton = styled(Link)`
   position: absolute;
   right: 40px;

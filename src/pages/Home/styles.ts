@@ -9,6 +9,8 @@ export const Page = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  position: relative;
 `
 
 export const Content = styled.div`
@@ -30,7 +32,7 @@ export const Content = styled.div`
   }
 
 `
-// background: url(../../images/landing.svg) no-repeat 80% center;
+// background: url(../../assets/home_bgimg.svg) no-repeat 80% center;
 
 export const MainText = styled.main`
   max-width: 350px;

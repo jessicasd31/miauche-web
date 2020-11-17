@@ -1,43 +1,43 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FiPlus, FiArrowRight } from 'react-icons/fi'
-import { MapContainer, TileLayer, Marker, Popup, useMapEvent } from 'react-leaflet'
-import Leaflet from 'leaflet';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 
 import logoImg from '../../assets/logo_s.svg'
-import mapMarkerImg from '../../assets/local.svg'
 import mapIcon from '../../assets/mapIcon';
-import {Page, Aside, AddButton, Select} from './styles'
-import SelectCity from '../../components/SelectCity'
+import {Page, Aside, AddButton } from './styles'
+import SetPositionSelect from '../../components/SetPositionSelect'
 import { useSelector } from 'react-redux'
 import { ApplicationState } from '../../store'
-// import api from '../services/api'
-  
-const sheltersSample = [
-  {
-    id: 1,
-    name: 'Aubrigo',
-    latitude: -5.7997439,
-    longitude: -35.2922852
-  }
-]  
+import api from '../../service/api'
+
+interface Shelter {
+  id: number
+  name: string
+  latitude: number
+  longitude: number
+}
 
 const SheltersMap = () => {
-  const positionMap = useSelector((state: ApplicationState) => state.positions.positionMap)
-  const [shelters, setShelters] = useState(sheltersSample)
+  const positionMap = useSelector((state: ApplicationState) => state.positions.currentPositions.positionMap)
+  const [shelters, setShelters] = useState<Shelter[]>([])
+  const userLogged = useSelector((state: ApplicationState) => state.user.userLogged)
 
-  // useEffect(() => {
-  // console.log(positions)
-  //   api.get('/shelters').then(response => {
-  //     setShelters(response.data);
-  //   })
-  // }, []);
+  useEffect(() => {
+
+    (async function getShelters() {
+      await api.get('/shelters').then(response => {
+        setShelters(response.data);
+      })
+    })();
+    
+  }, []);
 
   function DisplayPosition() {
 
     return (
       <MapContainer 
-        center={[positionMap?.latitude, positionMap?.longitude]}
+        center={[positionMap?.city_latitude, positionMap?.city_longitude]}
         zoom={positionMap?.zoom}
         style={{ width: '100%', height: '100%' }}
       >
@@ -79,15 +79,17 @@ const SheltersMap = () => {
         </header>
 
         <footer>
-          <SelectCity />
+          <SetPositionSelect />
         </footer>
       </Aside>
 
       <DisplayPosition />
 
-      <AddButton to="/shelter/create" className="create-orphanage">
-        <FiPlus size={32} color="#FFF" />
-      </AddButton>
+      { userLogged && (
+        <AddButton to="/shelter/create" className="create-orphanage">
+          <FiPlus size={32} color="#FFF" />
+        </AddButton>
+      )}
     </Page>
   )
 }

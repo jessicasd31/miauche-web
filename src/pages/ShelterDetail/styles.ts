@@ -22,7 +22,7 @@ export const Details = styled.div`
 
   & > img {
     width: 100%;
-    height: 300px;
+    height: 350px;
     object-fit: cover;
   }
 
@@ -58,19 +58,48 @@ export const Details = styled.div`
 `
 
 export const DetailsContent = styled.div`
-  padding: 80px;
+  padding: 70px 80px;
+  
+  ul {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    margin-bottom: 60px;
+    position: relative;
+  }
+
+  li {
+    a {
+      color: var(--darkGray);
+      text-align: center;
+      padding: 16px;
+      text-decoration: none;
+    }
+
+    a:hover {
+      opacity: 0.5;
+    }
+
+    &:not(:last-child)::after {
+      content: "";
+      border-right: 1px solid #CCC;
+    }
+  }
 
   h1 {
     color: var(--darkGray);
-    font-size: 54px;
+    font-size: 50px;
     line-height: 54px;
-    margin-bottom: 8px;
+    margin-bottom: 40px;
+    text-align: center;
   }
 
   p {
     line-height: 28px;
     color: #5C8599;
-    margin-top: 24px;
+    margin-top: 5px;
+    text-align: justify;
   }
 
   hr {
@@ -79,18 +108,29 @@ export const DetailsContent = styled.div`
     border: 0;
     background: #D3E2E6;
     margin: 64px 0;
+    
   }
 
   h2 {
-    font-size: 36px;
+    font-size: 30px;
     line-height: 46px;
     color: var(--darkGray);
   }
 
+  h3 {
+    font-size: 18px;
+    line-height: 46px;
+    color: var(--darkGray);
+    margin-top: 20px;
+
+    svg {
+      margin-right: 10px;
+    }
+  }
 `
 
 export const Map = styled.div`
-  margin-top: 64px;
+  margin-top: 40px;
   background: #E6F7FB;
   border: 1px solid #B3DAE2;
   border-radius: 20px;
@@ -120,8 +160,27 @@ export const OpenDetails = styled.div`
   column-gap: 20px;
 `
 
+export const Contacts = styled.div `
+  display: flex; 
+  flex-direction: column; 
+  justify-content: space-around; 
+  margin-top: 40px;
+
+  a {
+    margin-bottom: 5px;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  svg {
+    margin-right: 5px;
+  }
+`
+
 export const ContactButton = styled.button`
-  margin-top: 64px;
+  margin-top: 35px;
 
   width: 100%;
   height: 64px;
@@ -139,7 +198,7 @@ export const ContactButton = styled.button`
   transition: background-color 0.2s;
 
   svg {
-    margin-right: 16px;
+    margin-right: 10px;
   }
 
   &:hover {

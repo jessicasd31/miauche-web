@@ -1,13 +1,14 @@
 import { createStore, Store } from 'redux'
-import { Positions } from './ducks/positions/types'
+import { PositionsState } from './ducks/positions/types'
+import { UsersState } from './ducks/user/types'
 
 import rootReducer from './ducks/rootReducer'
 
 export interface ApplicationState {
-  positions: Positions
+  positions: PositionsState,
+  user: UsersState 
 }
 
 const store: Store<ApplicationState> = createStore(rootReducer)
-
 
 export default store;
